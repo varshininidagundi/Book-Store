@@ -142,22 +142,24 @@ for(let i in bookNamesList){
     console.log(i,bookNamesList[i]);
 }
 const bookIndex = parseInt(readline.question('Enter the index of the book: '));
+let quantityOfBookRequired = parseInt(readline.question('enter the quantity of book u require ?__'))
+console.log(quantityOfBookRequired);
 if (bookIndex >= 0 && bookIndex < bookStore.length) {
-    const selectedBook = bookStore[bookIndex];
-    if (selectedBook.bookObject.quantity > 0) {
+    let quantityInStore =  bookStore[bookIndex].bookObject['quantity'];
+    if ( quantityInStore>=quantityOfBookRequired && quantityOfBookRequired >=0) {
         let cart = [];
 
         const newEntry = {
-            name: selectedBook.bookObject.name,
-            quantity: 1
+            name: bookStore[bookIndex].bookObject['name'],
+            price: bookStore[bookIndex].bookObject['price'],
+            status:bookStore[bookIndex].bookObject['status'],
+            quantity: parseInt(quantityOfBookRequired)
         };
         cart.push(newEntry);
-
-        console.log("Updated cart:", cart);
-
-        // Reduce the quantity of the selected book in the bookStore array
-        selectedBook.bookObject.quantity -= 1;
-        console.log("Updated field in bookstore:", selectedBook);
+        console.log("Updated cart:", cart); 
+        quantityInStore = quantityInStore - quantityOfBookRequired;
+        bookStore[bookIndex].bookObject['quantity']=quantityInStore;
+        console.log("Updated field in bookstore:", bookStore[bookIndex]);
     } else {
         console.log("Sorry, the selected book is out of stock.");
     }
