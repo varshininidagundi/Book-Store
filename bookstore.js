@@ -153,7 +153,8 @@ if (bookIndex >= 0 && bookIndex < bookStore.length) {
             name: bookStore[bookIndex].bookObject['name'],
             price: bookStore[bookIndex].bookObject['price'],
             status:bookStore[bookIndex].bookObject['status'],
-            quantity: parseInt(quantityOfBookRequired)
+            quantity: parseInt(quantityOfBookRequired),
+            total_cart_value: bookStore[bookIndex].bookObject['price']*parseInt(quantityOfBookRequired)
         };
         cart.push(newEntry);
         console.log("Updated cart:", cart); 
