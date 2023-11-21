@@ -75,7 +75,7 @@ const bookStore = [
     },
     {
         bookObject: {
-            name:"The Golden Years" ,
+            name: "The Golden Years",
             price: 150,
             status: "available",
             quantity: 100
@@ -132,39 +132,47 @@ const bookStore = [
 ]
 console.log()
 console.log("list of all books in store");
-let bookNamesList =[]
+let bookNamesList = []
 bookStore.forEach(book => {
     bookNamesList.push(book.bookObject.name)
 });
 console.log(bookNamesList);
 console.log('select book which u want to add to cart according to the following index no.');
-for(let i in bookNamesList){
-    console.log(i,bookNamesList[i]);
+for (let i in bookNamesList) {
+    console.log(i, bookNamesList[i]);
 }
 const bookIndex = parseInt(readline.question('Enter the index of the book: '));
 let quantityOfBookRequired = parseInt(readline.question('enter the quantity of book u require ?__'))
-console.log(quantityOfBookRequired);
-if (bookIndex >= 0 && bookIndex < bookStore.length) {
-    let quantityInStore =  bookStore[bookIndex].bookObject['quantity'];
-    if ( quantityInStore>=quantityOfBookRequired && quantityOfBookRequired >=0) {
-        let cart = [];
-
-        const newEntry = {
-            name: bookStore[bookIndex].bookObject['name'],
-            price: bookStore[bookIndex].bookObject['price'],
-            status:bookStore[bookIndex].bookObject['status'],
-            quantity: parseInt(quantityOfBookRequired),
-            total_cart_value: bookStore[bookIndex].bookObject['price']*parseInt(quantityOfBookRequired)
-        };
-        cart.push(newEntry);
-        console.log("Updated cart:", cart); 
+function addToCart(bookIndex, quantityOfBookRequired) {
+    if (bookIndex >= 0 && bookIndex < bookStore.length) {
+        let quantityInStore = bookStore[bookIndex].bookObject['quantity'];
         quantityInStore = quantityInStore - quantityOfBookRequired;
-        bookStore[bookIndex].bookObject['quantity']=quantityInStore;
-        console.log("Updated field in bookstore:", bookStore[bookIndex]);
+        if (quantityOfBookRequired >= 0 ) {
+            if (bookStore[bookIndex].bookObject['status'] == 'available' && quantityInStore>=0) {
+                let cart = [];
+
+                const newEntry = {
+                    name: bookStore[bookIndex].bookObject['name'],
+                    price: bookStore[bookIndex].bookObject['price'],
+                    status: bookStore[bookIndex].bookObject['status'],
+                    quantity: parseInt(quantityOfBookRequired),
+                    total_cart_value: bookStore[bookIndex].bookObject['price'] * parseInt(quantityOfBookRequired)
+                };
+                cart.push(newEntry);
+                console.log("Updated cart:", cart);
+                bookStore[bookIndex].bookObject['quantity'] = quantityInStore;
+                console.log("Updated field in bookstore:", bookStore[bookIndex]);
+            }
+            else {
+                console.log(" your required quantity is not available \n");
+                let rentereedQuantity = readline.question('please re-enter the quatity you want to choose');
+                addToCart(bookIndex, rentereedQuantity);
+            }
+        } else {
+            console.log(" your entered number should be greater than 0");
+        }
     } else {
-        console.log("Sorry, the selected book is out of stock.");
+        console.log("Invalid index entered. Please enter a valid index.");
     }
-} else {
-    console.log("Invalid index entered. Please enter a valid index.");
 }
-//task 1 completed
+addToCart(bookIndex, quantityOfBookRequired)
